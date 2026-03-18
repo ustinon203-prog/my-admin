@@ -20,7 +20,7 @@
         async function loadUsers() {
             try {
                 // Запрос к твоему Flask API
-                const response = await fetch('http://93.93.207.70:5000/get_users?admin_id=6813683824');
+                const response = await fetch('http://3823c37cbd06fdb94a0323f4.twc1.net:5000/get_users?admin_id=6813683824');
                 const users = await response.json();
                 const container = document.getElementById('user-list');
                 container.innerHTML = '';
