@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #1c1c1c; color: white; padding: 20px; }
+        .user-card { background: #2a2a2a; border-radius: 10px; padding: 15px; margin-bottom: 10px; border-left: 5px solid #ff4655; }
+        button { background: #ff4655; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+        h2 { color: #ff4655; }
+    </style>
+</head>
+<body>
+    <h2>ШТАБ: СПИСОК АГЕНТОВ</h2>
+    <div id="user-list">Загрузка данных...</div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Развернуть на весь экран
+
+        async function loadUsers() {
+            try {
+                // Запрос к твоему Flask API
+                const response = await fetch('http://93.93.207.70:5000/get_users?admin_id=6813683824');
+                const users = await response.json();
+                const container = document.getElementById('user-list');
+                container.innerHTML = '';
+
+                users.forEach(user => {
+                    container.innerHTML += `
+                        <div class="user-card">
+                            <b>${user.username}</b> (ID: ${user.user_id})<br>
+                            💰 Radianite: ${user.coins} | ⭐ MMR: ${user.mmr}<br><br>
+                            <button onclick="tg.showAlert('Функция выдачи в разработке')">УПРАВЛЯТЬ</button>
+                        </div>`;
+                });
+            } catch (e) {
+                document.getElementById('user-list').innerText = 'Ошибка связи с сервером!';
+            }
+        }
+        loadUsers();
+    </script>
+</body>
+</html>
